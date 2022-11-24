@@ -1,9 +1,9 @@
 from django.urls import path
-from .views import shopListCreate
+from .views import TransactionListCreate
 
 urlpatterns = [
     path(
         "upload/",
-        shopListCreate,
+        TransactionListCreate,
     )
 ]

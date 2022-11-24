@@ -42,7 +42,7 @@ DJANGO_APPS = [
 ]
 
 MY_APPS = [
-    "shops",
+    "transactions",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + MY_APPS

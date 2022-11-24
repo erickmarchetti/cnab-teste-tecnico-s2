@@ -7,8 +7,8 @@ class Type(models.Model):
     sinal = models.CharField(max_length=1)
 
 
-class Shop(models.Model):
-    tipo = models.ForeignKey(Type, on_delete=models.CASCADE, related_name="loja")
+class Transaction(models.Model):
+    tipo = models.ForeignKey(Type, on_delete=models.CASCADE, related_name="transacoes")
     data = models.DateField()
     valor = models.IntegerField()
     cpf = models.CharField(max_length=11)

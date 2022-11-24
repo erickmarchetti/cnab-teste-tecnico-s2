@@ -22,11 +22,23 @@
   <body>
     <form method="POST" enctype="multipart/form-data">
       {% csrf_token %} {{ form.as_p }}
-      <button type="submit">Enviar</button>
+      <button type="submit">Send</button>
     </form>
 
-    <div class="containerErros__div">
-      <ul></ul>
-    </div>
+    <ul class="ErrorList__ul"></ul>
+
+    {% comment %}
+    <ul class="ShopList__ul">
+      {% if store_groups %} 
+      {% for shop_name,  in store_groups.items() %}
+      <li>
+            <h2>{% shop %}</h2>
+          </li>
+        {% endfor %}
+      {% else %}
+        Não há registros
+      {% endif %}
+    </ul>
+    {% endcomment %}
   </body>
 </html>

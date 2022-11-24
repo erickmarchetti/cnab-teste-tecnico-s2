@@ -20,6 +20,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path(
         "api/",
-        include("shops.urls"),
+        include("transactions.urls"),
     ),
 ]

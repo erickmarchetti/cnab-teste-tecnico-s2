@@ -1,4 +1,4 @@
-from shops.models import Type
+from transactions.models import Type
 from django.core.management.base import BaseCommand
 
 
