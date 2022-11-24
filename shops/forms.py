@@ -3,10 +3,12 @@ from .models import Shop
 
 
 class ShopForm(ModelForm):
+    file = FileField()
+
     class Meta:
         model = Shop
-        fields = "__all__"
+        fields = ["file"]
 
 
-teste = ShopForm.base_fields["teste"]
-teste.widget.attrs["accept"] = ".txt"
+file = ShopForm.base_fields["file"]
+file.widget.attrs["accept"] = ".txt"
