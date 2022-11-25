@@ -3,12 +3,13 @@ from transactions.models import Transaction
 
 
 class Store:
-    def __init__(
-        self, name=None, transactions: list[Transaction] = [], balance=0
-    ) -> None:
+    def __init__(self, name=None) -> None:
         self.name = name
-        self.transactions: list[Transaction] = transactions
-        self.balance = balance
+        self.transactions: list[Transaction] = []
+        self.balance = 0
+
+    def get_balance(self):
+        return f"R${round(self.balance / 100, 2)}".replace(".", ",")
 
 
 def formatting_date(date_str: str):
@@ -45,10 +46,11 @@ def get_values_from_file(file):
 
     for line in lines:
         transaction_data = {}
+        line = line.decode("utf8")
 
         for field in expected_fields:
             byte: bytes = line[field["start"] : field["end"]]
-            formated_string = byte.decode("utf8").lstrip().rstrip()
+            formated_string = byte.lstrip().rstrip()
 
             if field.get("formatting", None):
                 function = field["formatting"]
@@ -72,24 +74,18 @@ def create_stores(queryset, transaction_groups: list[Store]):
 
 def group_by_store(queryset):
     transaction_groups: list[Store] = []
-    # # for transaction in queryset:
-    # transaction.valor = round(transaction.valor / 100, 2)
-    # transaction.hora = transaction.hora.strftime("%H:%M:%S")
 
     create_stores(queryset, transaction_groups)
 
     for store in transaction_groups:
-        # resolvido bug das transactions
-        store.transactions = []
         for transaction in queryset:
             if store.name == transaction.nome:
-                store.transactions.append(transaction)
+                store.balance += (
+                    transaction.valor
+                    if transaction.tipo.sinal == "+"
+                    else -transaction.valor
+                )
 
-        for transaction in store.transactions:
-            store.balance += (
-                transaction.valor
-                if transaction.tipo.sinal == "+"
-                else -transaction.valor
-            )
+                store.transactions.append(transaction)
 
     return transaction_groups

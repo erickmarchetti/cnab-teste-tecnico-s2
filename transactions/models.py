@@ -16,3 +16,12 @@ class Transaction(models.Model):
     hora = models.TimeField()
     dono = models.CharField(max_length=14)
     nome = models.CharField(max_length=19)
+
+    def get_time(self):
+        return self.hora.strftime("%H:%M:%S")
+
+    def get_value(self):
+        return f"R${round(self.valor / 100, 2)}".replace(".", ",")
+
+    def get_date(self):
+        return self.data.strftime("%d/%m/%Y")

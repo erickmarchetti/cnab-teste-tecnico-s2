@@ -32,15 +32,15 @@
         {% for store in transaction_groups %}
           <li>
             <h2>{{ store.name }}</h2>
-            <p>Saldo: {{ store.formatting_balance }}</p>
+            <p>Saldo: {{ store.get_balance }}</p>
             <ul>
               {% for transaction in store.transactions %}
                 <li>
-                  <p>Data: {{ transaction.data }}</p>
-                  <p>Valor: {{ transaction.valor }}</p>
+                  <p>Data: {{ transaction.get_date }}</p>
+                  <p>Valor: {{ transaction.get_value }}</p>
                   <p>CPF: {{ transaction.cpf }}</p>
                   <p>Cartão: {{ transaction.cartao }}</p>
-                  <p>Hora: {{ transaction.hora }}</p>
+                  <p>Hora: {{ transaction.get_time }}</p>
                   <p>Dono: {{ transaction.dono }}</p>
                   <p>Tipo: {{ transaction.tipo.descricao }}</p>
                 </li>
