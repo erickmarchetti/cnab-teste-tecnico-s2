@@ -21,11 +21,17 @@
   </head>
   <body>
     <form method="POST" enctype="multipart/form-data">
-      {% csrf_token %} {{ form.as_p }}
+      {% csrf_token %} {{ form.file }}
       <button type="submit">Send</button>
     </form>
 
-    <ul class="ErrorList__ul"></ul>
+    {% if file_errors %}
+      <ul class="ErrorList__ul">
+        {% for error in file_errors %}
+          <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
 
     <ul class="TransactionList__ul">
       {% if transaction_groups %} 

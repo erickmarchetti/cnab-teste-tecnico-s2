@@ -28,6 +28,17 @@ def formatting_time(time_str: str):
     )
 
 
+def check_lines(file_lines: list[bytes]):
+    decoded_lines = [line.decode("utf8") for line in file_lines]
+
+    errors = []
+    for position, line in enumerate(decoded_lines, 1):
+        if not len(line) is 81:
+            errors.append(f"A linha {position} deve ter exatamente 81 caracteres")
+
+    return errors
+
+
 def get_values_from_file(file):
     expected_fields = [
         {"name": "tipo_id", "start": 0, "end": 1},
@@ -43,6 +54,10 @@ def get_values_from_file(file):
     lines = file.readlines()
 
     transaction_data_list = []
+
+    file_errors = check_lines(lines)
+    if file_errors:
+        return (transaction_data_list, file_errors)
 
     for line in lines:
         transaction_data = {}
@@ -60,7 +75,7 @@ def get_values_from_file(file):
 
         transaction_data_list.append(transaction_data)
 
-    return transaction_data_list
+    return (transaction_data_list, file_errors)
 
 
 def create_stores(queryset, transaction_groups: list[Store]):
