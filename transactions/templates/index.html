@@ -27,18 +27,30 @@
 
     <ul class="ErrorList__ul"></ul>
 
-    {% comment %}
-    <ul class="ShopList__ul">
-      {% if store_groups %} 
-      {% for shop_name,  in store_groups.items() %}
-      <li>
-            <h2>{% shop %}</h2>
+    <ul class="TransactionList__ul">
+      {% if transaction_groups %} 
+        {% for store in transaction_groups %}
+          <li>
+            <h2>{{ store.name }}</h2>
+            <p>Saldo: {{ store.formatting_balance }}</p>
+            <ul>
+              {% for transaction in store.transactions %}
+                <li>
+                  <p>Data: {{ transaction.data }}</p>
+                  <p>Valor: {{ transaction.valor }}</p>
+                  <p>CPF: {{ transaction.cpf }}</p>
+                  <p>Cartão: {{ transaction.cartao }}</p>
+                  <p>Hora: {{ transaction.hora }}</p>
+                  <p>Dono: {{ transaction.dono }}</p>
+                  <p>Tipo: {{ transaction.tipo.descricao }}</p>
+                </li>
+              {% endfor %}
+            </ul>
           </li>
         {% endfor %}
       {% else %}
         Não há registros
       {% endif %}
     </ul>
-    {% endcomment %}
   </body>
 </html>

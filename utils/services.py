@@ -1,4 +1,14 @@
 from datetime import time, date
+from transactions.models import Transaction
+
+
+class Store:
+    def __init__(
+        self, name=None, transactions: list[Transaction] = [], balance=0
+    ) -> None:
+        self.name = name
+        self.transactions: list[Transaction] = transactions
+        self.balance = balance
 
 
 def formatting_date(date_str: str):
@@ -51,13 +61,35 @@ def get_values_from_file(file):
     return transaction_data_list
 
 
-def group_by_store(queryset):
-    store_groups = {}
-
+def create_stores(queryset, transaction_groups: list[Store]):
     for transaction in queryset:
-        if not transaction.nome in store_groups:
-            store_groups[transaction.nome] = []
+        store_name_list = [store.name for store in transaction_groups]
 
-        store_groups[transaction.nome].append(transaction)
+        if not transaction.nome in store_name_list:
+            new_store = Store(transaction.nome)
+            transaction_groups.append(new_store)
 
-    return store_groups
+
+def group_by_store(queryset):
+    transaction_groups: list[Store] = []
+    # # for transaction in queryset:
+    # transaction.valor = round(transaction.valor / 100, 2)
+    # transaction.hora = transaction.hora.strftime("%H:%M:%S")
+
+    create_stores(queryset, transaction_groups)
+
+    for store in transaction_groups:
+        # resolvido bug das transactions
+        store.transactions = []
+        for transaction in queryset:
+            if store.name == transaction.nome:
+                store.transactions.append(transaction)
+
+        for transaction in store.transactions:
+            store.balance += (
+                transaction.valor
+                if transaction.tipo.sinal == "+"
+                else -transaction.valor
+            )
+
+    return transaction_groups

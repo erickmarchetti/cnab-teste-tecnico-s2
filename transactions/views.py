@@ -9,13 +9,13 @@ def TransactionListCreate(request):
 
     if request.method == "GET":
         transactions = Transaction.objects.all()
-        store_groups = group_by_store(transactions)
+        transaction_groups = group_by_store(transactions)
 
         form = TransactionForm()
 
         context = {
             "form": form,
-            "store_groups": store_groups,
+            "transaction_groups": transaction_groups,
         }
 
         return render(request, "index.html", context)
@@ -30,13 +30,13 @@ def TransactionListCreate(request):
             Transaction.objects.create(**transaction_data)
 
         transactions = Transaction.objects.all()
-        store_groups = group_by_store(transactions)
+        transaction_groups = group_by_store(transactions)
 
         form = TransactionForm()
 
         context = {
             "form": form,
-            "store_groups": store_groups,
+            "transaction_groups": transaction_groups,
         }
 
         return render(request, "index.html", context)
