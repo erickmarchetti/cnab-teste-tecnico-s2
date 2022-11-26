@@ -3,7 +3,11 @@ from .forms import TransactionForm
 
 from .models import Transaction
 from .serializers import TransactionSerializer
-from utils.services import get_values_from_file, group_by_store
+from utils.services import (
+    get_values_from_file,
+    group_by_store,
+    decode_serializer_errors,
+)
 
 
 def transactionListCreate(request):
@@ -30,15 +34,14 @@ def transactionListCreate(request):
 
         if file_errors:
             context["file_errors"] = file_errors
+            context["has_errors"] = True
             return render(request, "index.html", context)
 
         serializer = TransactionSerializer(data=transaction_data_list, many=True)
 
         if not serializer.is_valid():
-            context["serializer_errors"] = {
-                field: f"{error[0]}" for field, error in serializer.errors[0].items()
-            }
-
+            context["serializer_errors"] = decode_serializer_errors(serializer)
+            context["has_errors"] = True
             return render(request, "index.html", context)
 
         serializer.save()

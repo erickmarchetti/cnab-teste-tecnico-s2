@@ -1,4 +1,3 @@
-from datetime import time, date
 from transactions.models import Transaction
 
 
@@ -10,23 +9,6 @@ class Store:
 
     def get_balance(self):
         return f"R${round(self.balance / 100, 2)}".replace(".", ",")
-
-
-def formatting_date(date_str: str):
-    return date(
-        year=int(date_str[:4]),
-        month=int(date_str[4:6]),
-        day=int(date_str[6:]),
-    )
-
-
-def formatting_time(time_str: str):
-    print(time_str)
-    return time(
-        hour=int(time_str[:2]),
-        minute=int(time_str[2:4]),
-        second=int(time_str[4:]),
-    )
 
 
 def check_lines(file_lines: list[bytes]):
@@ -106,3 +88,15 @@ def group_by_store(queryset):
                 store.transactions.append(transaction)
 
     return transaction_groups
+
+
+def decode_serializer_errors(serializer):
+    all_serializer_errors = {}
+
+    for error in serializer.errors:
+        all_serializer_errors = {**all_serializer_errors, **error}
+
+    serializer_errors = {
+        field: f"{error[0]}" for field, error in all_serializer_errors.items()
+    }
+    return serializer_errors

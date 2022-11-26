@@ -46,19 +46,21 @@
             <ul>
               {% for transaction in store.transactions %}
                 <li>
-                  <p>Data: {{ transaction.get_date }}</p>
+                  <p>Tipo: {{ transaction.tipo.descricao }}</p>
                   <p>Valor: {{ transaction.get_value }}</p>
                   <p>CPF: {{ transaction.cpf }}</p>
                   <p>Cartão: {{ transaction.cartao }}</p>
+                  <p>Data: {{ transaction.get_date }}</p>
                   <p>Hora: {{ transaction.get_time }}</p>
                   <p>Dono: {{ transaction.dono }}</p>
-                  <p>Tipo: {{ transaction.tipo.descricao }}</p>
                 </li>
               {% endfor %}
             </ul>
           </li>
         {% endfor %}
-      {% else %}
+      {% elif has_errors %}
+          Link da doc
+      {% elif not transaction_groups and not has_errors %}
         Não há registros
       {% endif %}
     </ul>
