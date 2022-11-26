@@ -22,13 +22,17 @@
   <body>
     <form method="POST" enctype="multipart/form-data">
       {% csrf_token %} {{ form.file }}
-      <button type="submit">Send</button>
+      <button type="submit">Enviar</button>
     </form>
 
-    {% if file_errors %}
+    {% if file_errors or serializer_errors %}
       <ul class="ErrorList__ul">
         {% for error in file_errors %}
           <li>{{ error }}</li>
+        {% endfor %}
+
+        {% for field, error in serializer_errors.items %}
+          <li>{{ field }}: {{ error }}</li>
         {% endfor %}
       </ul>
     {% endif %}
