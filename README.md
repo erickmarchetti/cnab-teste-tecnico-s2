@@ -100,4 +100,4 @@ se houver qualquer tipo de erro no envio ou dados do arquivo, será renderizada 
 Para o envio correto do arquivo de texto CNAB deve ser seguido uma série de passos:
 - Todas as linhas do arquivo devem ter exatamente 80 caracteres
 - Todas as informações devem ser passadas juntas, sem nenhum tipo de separação (ex: ",", "-", "/" e etc...)
-- As informações seguem uma ordem específica, veja na tabela
+- As informações devem seguir a ordem da tabela
