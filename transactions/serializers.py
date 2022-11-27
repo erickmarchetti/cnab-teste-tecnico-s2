@@ -4,9 +4,8 @@ from .models import Transaction, Type
 
 
 class TransactionSerializer(serializers.ModelSerializer):
-    tipo_id = serializers.ChoiceField(
-        choices=[transaction.id for transaction in Type.objects.all()],
-        error_messages={"invalid_choice": "Tipo inválido, verifique a tabela de tipos"},
+    tipo_id = serializers.IntegerField(
+        error_messages={"invalid": "Tipo inválido, verifique a tabela de tipos"},
     )
     data = serializers.DateField(
         input_formats=["%Y%m%d"],
