@@ -6,46 +6,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Upload CNAB</title>
 
-    <style>
-      * {
-        border: 0;
-        margin: 0;
-        padding: 0;
-      }
-
-      body {
-        width: 100vw;
-        height: 100vh;
-      }
-    </style>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}" />
   </head>
   <body>
-    <form method="POST" enctype="multipart/form-data">
+    <form method="POST" enctype="multipart/form-data" class="form__form">
       {% csrf_token %} {{ form.file }}
-      <button type="submit">Enviar</button>
+      <button class="form_button" type="submit">Enviar</button>
     </form>
 
     {% if file_errors or serializer_errors %}
       <ul class="ErrorList__ul">
         {% for error in file_errors %}
-          <li>{{ error }}</li>
+          <li class="ErrorList__li">{{ error }}</li>
         {% endfor %}
 
         {% for field, error in serializer_errors.items %}
-          <li>{{ field }}: {{ error }}</li>
+          <li class="ErrorList__li">{{ field }}: {{ error }}</li>
         {% endfor %}
       </ul>
     {% endif %}
 
-    <ul class="TransactionList__ul">
+    {% if has_errors %}
+      <p class="linkDoc__p">
+        <a
+          href="https://github.com/erickmarchetti/leitor-cnab/blob/main/README.md" 
+          target="_blank"
+        >
+          Link
+        </a>
+        para documentação
+      </p>
+    {% endif %}
+
+    <ul class="StoreList__ul">
       {% if transaction_groups %} 
         {% for store in transaction_groups %}
-          <li>
-            <h2>{{ store.name }}</h2>
-            <p>Saldo: {{ store.get_balance }}</p>
-            <ul>
+          <li class="StoreList__li">
+            <h2 class="Store__h2">{{ store.name }}</h2>
+            <p class="Store__saldo">Saldo: {{ store.get_balance }}</p>
+            <ul class="Store__TransactionsList">
               {% for transaction in store.transactions %}
-                <li>
+                <li class="TransactionsList__li">
                   <p>Tipo: {{ transaction.tipo.descricao }}</p>
                   <p>Valor: {{ transaction.get_value }}</p>
                   <p>CPF: {{ transaction.cpf }}</p>
@@ -58,8 +60,6 @@
             </ul>
           </li>
         {% endfor %}
-      {% elif has_errors %}
-          Link da doc
       {% elif not transaction_groups and not has_errors %}
         Não há registros
       {% endif %}
